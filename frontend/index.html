@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="chat.js"></script>
+  </head>
+  <body class="h-screen bg-gray-800 p-0">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside
+        class="w-1/4 bg-gray-800 border-r border-gray-900 p-4 flex justify-between flex-col"
+      >
+        <div>
+          <h2 class="text-2xl font-bold mb-4 text-gray-300">Contatos</h2>
+          <ul class="space-y-2" id="contact-list">
+            <li
+              class="p-2 rounded hover:bg-gray-900 cursor-pointer text-gray-300"
+            >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-white bold" id="userLogged"></h2>
+        </div>
+      </aside>
+
+      <div class="flex flex-col w-3/4">
+        <header class="bg-gray-900 border-b border-gray-900 p-4">
+          <h2 id="contactName" class="text-xl font-semibold text-gray-300">
+            Contato
+          </h2>
+        </header>
+
+        <div id="chat" class="flex-1 overflow-y-auto p-4 space-y-2 justify-end flex flex-col text-white">
+          
+        <div id="messages" class="flex flex-col">
+
+        </div>
+        <div class="flex p-4 bg-grey-800 border-t border-gray-900">
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="Digite uma mensagem..."
+            class="flex-1 border border-gray-900 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-gray-300"
+          />
+          <button
+            id="sendButton"
+            class="ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      addEventListener('DOMContentLoaded', async () => {
+        await checkAuth();
+      });
+
+      async function checkAuth() {
+  try {
+    const res = await fetch('/api/user-info', {
+      credentials: 'include' // Importante para enviar os cookies
+    });
+
+    if (res.ok) {
+      const user = await res.json();
+      console.log('Usuário autenticado:', user);
+      document.getElementById('userLogged').innerText = user.nome;
+      window.userId = user.id;
+    } else {
+      window.location.href = '/login.html'; // Redireciona se não autenticado
+    }
+  } catch (error) {
+    console.error('Erro na autenticação:', error);
+    window.location.href = '/login.html';
+  }
+}
+
+    </script>
+  </body>
+</html>
