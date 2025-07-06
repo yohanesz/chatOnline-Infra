@@ -66,7 +66,7 @@ async function addMessage(conversationId, senderId, text) {
     };
 
     const result = await conn.collection('messages').insertOne(message);
-    return result;
+    return message;
 }
 
 module.exports = {

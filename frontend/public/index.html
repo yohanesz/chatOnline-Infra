@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/chat.js"></script>
+</head>
+<body class="h-screen bg-[#161717] text-gray-300">
+
+  <!-- Botão de menu (aparece no mobile) -->
+  <div class="md:hidden p-4">
+    <button id="menuToggle" class="text-white focus:outline-none">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex h-screen">
+    <!-- Sidebar (visível em md+ ou como drawer no mobile) -->
+    <aside id="sidebar"
+      class="fixed z-40 md:relative md:translate-x-0 transform -translate-x-full md:flex w-64 border-r border-[#252529] p-4 bg-[#161717] flex-col justify-between transition-transform duration-300 ease-in-out">
+
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Contatos</h2>
+        <ul id="contact-list" class="space-y-2">
+          <!-- Contatos serão adicionados aqui -->
+        </ul>
+      </div>
+      <div class="flex flex-row justify-between">
+        <h2 id="userLogged" class="text-white font-semibold text-sm"></h2>
+        <button id="logoutButton">Exit</button>
+      </div>
+    </aside>
+
+    <!-- Overlay para mobile -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30 md:hidden"></div>
+
+    <!-- Área principal do chat -->
+    <main class="flex-1 flex flex-col">
+      <header class="bg-[#161717] p-4">
+        <div class="bg-[#242626] w-fit py-2 pr-6 pl-2 rounded-full flex flex-row items-center">
+          <div class="bg-gray-200 rounded-full px-2 mr-4 text-black text-center flex items-center justify-center">
+            <h1>C</h1>
+          </div>
+          <h2 id="contactName" class="text-xl font-semibold">Contato</h2>
+        </div>
+      </header>
+
+      <!-- Mensagens -->
+      <section id="chat" class="flex-1 overflow-y-auto p-4 flex flex-col justify-end space-y-2">
+        <div id="messages" class="flex flex-col space-y-2 items-start">
+          <!-- Mensagens aparecerão aqui -->
+        </div>
+      </section>
+
+      <!-- Barra de envio -->
+      <footer class="p-4">
+        <form id="chatForm" class="relative flex items-center w-full">
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="Digite uma mensagem"
+            class="w-full pl-4 pr-12 py-3 rounded-full border-none bg-[#242626] text-gray-300 focus:outline-none"
+          />
+          <button
+            id="sendButton"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600"
+            aria-label="Enviar mensagem"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+            </svg>
+          </button>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    menuToggle?.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    });
+
+    overlay?.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>

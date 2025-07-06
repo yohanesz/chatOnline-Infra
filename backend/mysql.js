@@ -1,4 +1,5 @@
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 
 async function connect() {
 
@@ -26,19 +27,31 @@ async function showContacts(id) {
     return rows;
 }
 
-async function insertUser(nome) {
-    const conn = await connect();
-    const sql = `INSERT INTO user (nome) VALUES (?)`;
+async function insertUser(nome, senha, email) {
+  const conn = await connect();
 
-    try {
-        await conn.query(sql, [nome]);
-        console.log(`Usuário inserido: ${nome}`);
-    } catch (error) {
-        console.error('Erro ao inserir usuário:', error);
-        throw error;
+  try {
+    const [existing] = await conn.query('SELECT id FROM user WHERE email = ?', [email]);
+
+    if (existing.length > 0) {
+      // Retorne uma flag ou lance um erro para o controller tratar
+      throw new Error('E-mail já cadastrado');
     }
-}
 
+    const hashedPassword = await bcrypt.hash(senha, 10);
+
+    const sql = 'INSERT INTO user (nome, senha, email) VALUES (?, ?, ?)';
+    await conn.query(sql, [nome, hashedPassword, email]);
+
+    const [result] = await conn.query('SELECT * FROM user WHERE email = ?', [email]);
+
+    console.log(`Usuário inserido: ${nome}`);
+    return result[0];
+  } catch (error) {
+    console.error('Erro ao inserir usuário:', error);
+    throw error;
+  }
+}
 
 module.exports = {
     showContacts,

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      window.autoRedirect = false;
+    </script>
+    <script src="js/auth.js" defer></script>
+    <script src="js/register.js" defer></script>
+  </head>
+  <body class="h-screen bg-gray-800">
+
+    <div class="flex h-screen justify-center items-center">
+      <form id="formRegister" class="flex flex-col space-y-4 bg-gray-900 p-6 rounded">
+
+        <label for="nome" class="text-white">Nome</label>
+        <input type="text" name="nome" id="nome" class="p-2 rounded text-black">
+
+        <label for="email" class="text-white">E-mail</label>
+        <input type="email" name="email" id="email" required class="p-2 rounded text-black"/>
+
+        <label for="senha" class="text-white">Senha</label>
+        <input type="password" name="senha" id="senha" required class="p-2 rounded text-black">
+
+        <!-- <label for="senha" class="text-white">Repita a senha</label> -->
+        <!-- <input type="senha" name="reSenha" id="reSenha" class="p-2 rounded text-black"> -->
+
+        <button type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Registrar</button>
+         <div id="mensagem"></div>
+      </form>
+    </div>
+  </body>
+</html>
