@@ -16,7 +16,7 @@ docker logs $CONTAINER_NAME > "$LOG_FILE" 2>&1
 if [ -s "$LOG_FILE" ]; then
     echo "Fazendo upload do arquivo '$LOG_FILE' para o bucket '$BUCKET_NAME'..."
     
-    oci os object put --bucket-name "$BUCKET_NAME" --file "$LOG_FILE" --name "$(basename "$LOG_FILE")" --no-progress
+    oci os object put --bucket-name "$BUCKET_NAME" --file "$LOG_FILE" --name "$(basename "$LOG_FILE")"
 
     if [ $? -eq 0 ]; then
         echo "Upload concluído com sucesso."
